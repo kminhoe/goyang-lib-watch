@@ -1,0 +1,21 @@
+name = "goyang-lib-watch"
+main = "src/index.js"
+compatibility_date = "2026-10-01"
+
+# 사이트 화면 (public/index.html)
+[assets]
+directory = "./public"
+binding = "ASSETS"
+
+# 알림 목록과 마지막 확인 결과를 저장하는 곳
+# `npx wrangler kv namespace create KV` 를 실행하고 나온 id 를 아래에 붙여넣는다.
+[[kv_namespaces]]
+binding = "KV"
+id = "여기에_KV_ID_붙여넣기"
+
+# 30분마다 확인
+[triggers]
+crons = ["*/30 * * * *"]
+
+[observability]
+enabled = true

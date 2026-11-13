@@ -41,9 +41,9 @@
 ## 할 일
 
 - [ ] 다른 PC에 Node.js를 설치하고 Cloudflare 계정을 만든다(무료). `npx wrangler login`
-- [ ] Worker 프로젝트 생성: `wrangler.toml`(assets, kv_namespaces, triggers.crons), `src/index.js`, `public/index.html`
-- [ ] `wrangler dev`로 로컬 테스트한다. cron은 `--test-scheduled`로 확인한다.
+- [x] Worker 프로젝트 생성: `wrangler.toml`(assets, kv_namespaces, triggers.crons), `src/index.js`, `public/index.html`
+- [x] `wrangler dev`로 로컬 테스트한다. cron은 `--test-scheduled`로 확인한다.
 - [ ] 배포 후 **Cloudflare 서버에서 도서관 사이트 접속이 되는지 꼭 확인**한다. 해외 접속 차단 가능성이 있다.
 - [ ] 텔레그램 봇을 만들고(@BotFather) Secrets를 등록한다.
 - [ ] 기존 GitHub Actions 감시(`.github/workflows/watch.yml`, `watch.py`, `watch.json`)를 삭제한다. 둘 다 돌면 알림이 중복된다.
-- [ ] README를 새 구조에 맞게 다시 쓴다.
+- [x] README를 새 구조에 맞게 다시 쓴다.
