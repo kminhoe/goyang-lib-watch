@@ -158,6 +158,14 @@
 
   .hint { font-size: 12.5px; color: var(--muted); margin: -4px 0 14px; }
 
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
+  .chip {
+    border: 1px solid var(--line); background: var(--surface); color: var(--muted);
+    font-size: 13px; font-weight: 600; padding: 5px 12px; border-radius: 999px;
+  }
+  .chip:hover { border-color: var(--accent); }
+  .chip[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--bg); }
+
   /* 로그인 */
   .login { max-width: 360px; margin: 12vh auto 0; text-align: center; }
   .login h2 { font-size: 18px; margin: 14px 0 4px; }
@@ -235,6 +243,7 @@
         <button class="primary" type="submit" id="search-btn">검색</button>
       </form>
       <p class="hint">고양시도서관센터 전체 도서관에서 찾습니다. 결과에서 <b>알림 받기</b>를 누르면 30분마다 확인해서 알려드립니다.</p>
+      <div class="chips" id="lib-filter" hidden></div>
       <div id="results"></div>
     </div>
 
@@ -296,7 +305,7 @@
   };
 
   function demoSearch(q) {
-    const libs = ["[식사] 식사종합자료실", "[마두] 마두종합자료실", "[화정] 화정종합자료실", "[일산] 일산종합자료실", "[행신] 행신종합자료실"];
+    const libs = ["[아람누리] 아람누리종합자료실", "[화정] 화정종합자료실", "[식사] 식사종합자료실", "[마두] 마두종합자료실", "[일산] 일산종합자료실", "[행신] 행신종합자료실"];
     const titles = [q, `${q} 2`, `처음 읽는 ${q}`];
     const out = [];
     let n = 0;
@@ -320,7 +329,8 @@
     if (url.pathname === "/api/watch" && method === "POST") {
       const book = JSON.parse(opts.body);
       demo.watch.push(book);
-      demo.status[book.keyword] = demoSearch(book.keyword).filter((i) => i.title.replace(/\s/g, "") .includes(book.title_contains.replace(/\s/g, "")));
+      demo.status[book.keyword] = demoSearch(book.keyword).filter((i) => i.title.replace(/\s/g, "") .includes(book.title_contains.replace(/\s/g, "")))
+        .filter((i) => !book.libraries.length || book.libraries.some((l) => i.library.includes(`[${l}]`)));
       return { books: demo.watch };
     }
     if (url.pathname === "/api/watch" && method === "DELETE") {
@@ -407,9 +417,30 @@
     }).join("");
   }
 
-  function renderResults(items, q) {
+  // 도서관 선택 (브라우저에 기억)
+  const LIB_KEY = "glw-libs";
+  let selectedLibs = new Set();
+  try { selectedLibs = new Set(JSON.parse(store.get(LIB_KEY) || "[]")); } catch {}
+  const libName = (lib) => splitLib(lib)[0];
+  let lastItems = [];
+
+  function renderLibFilter() {
+    const el = $("#lib-filter");
+    const names = new Set([...lastItems.map((i) => libName(i.library)), ...selectedLibs]);
+    if (!names.size) { el.hidden = true; return; }
+    el.hidden = false;
+    const sorted = [...names].sort((a, b) => a.localeCompare(b, "ko"));
+    el.innerHTML = `<button class="chip" data-lib="" aria-pressed="${!selectedLibs.size}">전체</button>` +
+      sorted.map((n) => `<button class="chip" data-lib="${esc(n)}" aria-pressed="${selectedLibs.has(n)}">${esc(n)}</button>`).join("");
+  }
+
+  function renderResults(allItems, q) {
+    lastItems = allItems;
+    renderLibFilter();
     const el = $("#results");
-    if (!items.length) { el.innerHTML = `<div class="card empty">“${esc(q)}” 검색 결과가 없습니다.</div>`; return; }
+    const items = selectedLibs.size ? allItems.filter((i) => selectedLibs.has(libName(i.library))) : allItems;
+    if (!allItems.length) { el.innerHTML = `<div class="card empty">“${esc(q)}” 검색 결과가 없습니다.</div>`; return; }
+    if (!items.length) { el.innerHTML = `<div class="card empty">선택한 도서관(${esc([...selectedLibs].join(", "))})에는 이 책이 없습니다.</div>`; return; }
     const groups = new Map();
     for (const i of items) {
       if (!groups.has(i.title)) groups.set(i.title, []);
@@ -512,12 +543,22 @@
   });
 
   document.addEventListener("click", async (e) => {
+    const chip = e.target.closest("[data-lib]");
+    if (chip) {
+      const n = chip.dataset.lib;
+      if (!n) selectedLibs.clear();
+      else if (selectedLibs.has(n)) selectedLibs.delete(n);
+      else selectedLibs.add(n);
+      store.set(LIB_KEY, JSON.stringify([...selectedLibs]));
+      renderResults(lastItems, lastQuery);
+      return;
+    }
     const add = e.target.closest("[data-add]");
     if (add) {
       const title = add.dataset.add;
       add.disabled = true;
       try {
-        const w = await api("/api/watch", { method: "POST", body: JSON.stringify({ keyword: title, title_contains: title, libraries: [] }) });
+        const w = await api("/api/watch", { method: "POST", body: JSON.stringify({ keyword: title, title_contains: title, libraries: [...selectedLibs] }) });
         state.watch = w.books;
         add.textContent = "알림 받는 중";
         toast(`“${title}” 알림을 켰습니다`);
