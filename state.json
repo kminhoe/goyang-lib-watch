@@ -1,0 +1,191 @@
+{
+ "한국사 이상현상 연구원": {
+  "1123095547": {
+   "available": false,
+   "can_reserve": false,
+   "due": "",
+   "id": "1123095547",
+   "library": "[아람누리] 아람종합자료실",
+   "reserve_max": 2,
+   "reserved": 2,
+   "status": "대출불가 (대출중)",
+   "title": "한국사 이상현상 연구원 : 최인서 소설"
+  },
+  "1123145789": {
+   "available": false,
+   "can_reserve": false,
+   "due": "2026.11.27",
+   "id": "1123145789",
+   "library": "[신원] 신원종합자료실",
+   "reserve_max": 2,
+   "reserved": 2,
+   "status": "대출불가 (대출중)",
+   "title": "한국사 이상현상 연구원 : 최인서 소설"
+  },
+  "1123249047": {
+   "available": false,
+   "can_reserve": false,
+   "due": "2026.11.26",
+   "id": "1123249047",
+   "library": "[식사] 식사종합자료실",
+   "reserve_max": 2,
+   "reserved": 2,
+   "status": "대출불가 (대출중)",
+   "title": "한국사 이상현상 연구원 : 최인서 소설"
+  },
+  "1123310145": {
+   "available": false,
+   "can_reserve": false,
+   "due": "2026.11.29",
+   "id": "1123310145",
+   "library": "[대화] 대화종합자료실",
+   "reserve_max": 2,
+   "reserved": 2,
+   "status": "대출불가 (대출중)",
+   "title": "한국사 이상현상 연구원 : 최인서 소설"
+  },
+  "1123379869": {
+   "available": false,
+   "can_reserve": false,
+   "due": "2026.11.24",
+   "id": "1123379869",
+   "library": "[높빛] 종합자료실1(2층)",
+   "reserve_max": 2,
+   "reserved": 2,
+   "status": "대출불가 (대출중)",
+   "title": "한국사 이상현상 연구원 : 최인서 소설"
+  },
+  "1123400960": {
+   "available": false,
+   "can_reserve": false,
+   "due": "2026.12.02",
+   "id": "1123400960",
+   "library": "[덕이] 덕이종합자료실",
+   "reserve_max": 2,
+   "reserved": 2,
+   "status": "대출불가 (대출중)",
+   "title": "한국사 이상현상 연구원 : 최인서 소설"
+  },
+  "1123549993": {
+   "available": false,
+   "can_reserve": false,
+   "due": "",
+   "id": "1123549993",
+   "library": "[한뫼] 한뫼종합자료실",
+   "reserve_max": 2,
+   "reserved": 2,
+   "status": "대출불가 (대출중)",
+   "title": "한국사 이상현상 연구원 : 최인서 소설"
+  },
+  "1123707197": {
+   "available": false,
+   "can_reserve": false,
+   "due": "2026.11.27",
+   "id": "1123707197",
+   "library": "[일산] 종합자료실1(2층)",
+   "reserve_max": 2,
+   "reserved": 2,
+   "status": "대출불가 (대출중)",
+   "title": "한국사 이상현상 연구원 : 최인서 소설"
+  },
+  "1124021188": {
+   "available": false,
+   "can_reserve": false,
+   "due": "",
+   "id": "1124021188",
+   "library": "[풍동] 풍동종합자료실1(3층)",
+   "reserve_max": 2,
+   "reserved": 2,
+   "status": "대출불가 (대출중)",
+   "title": "한국사 이상현상 연구원 : 최인서 소설"
+  },
+  "1124067590": {
+   "available": false,
+   "can_reserve": false,
+   "due": "2026.11.24",
+   "id": "1124067590",
+   "library": "[화정] 화정종합자료실1",
+   "reserve_max": 2,
+   "reserved": 2,
+   "status": "대출불가 (대출중)",
+   "title": "한국사 이상현상 연구원 : 최인서 소설"
+  },
+  "1124208479": {
+   "available": false,
+   "can_reserve": false,
+   "due": "",
+   "id": "1124208479",
+   "library": "[가좌] <가좌>종합자료실",
+   "reserve_max": 2,
+   "reserved": 2,
+   "status": "대출불가 (대출중)",
+   "title": "한국사 이상현상 연구원 : 최인서 소설"
+  },
+  "1124567520": {
+   "available": false,
+   "can_reserve": false,
+   "due": "2026.12.03",
+   "id": "1124567520",
+   "library": "[가좌] <가좌>종합자료실",
+   "reserve_max": 2,
+   "reserved": 2,
+   "status": "대출불가 (대출중)",
+   "title": "한국사 이상현상 연구원 : 최인서 소설"
+  },
+  "1124654088": {
+   "available": false,
+   "can_reserve": false,
+   "due": "2026.11.24",
+   "id": "1124654088",
+   "library": "[마두] 마두종합자료실2(2층)",
+   "reserve_max": 2,
+   "reserved": 2,
+   "status": "대출불가 (대출중)",
+   "title": "한국사 이상현상 연구원 : 최인서 소설"
+  },
+  "1124676879": {
+   "available": false,
+   "can_reserve": false,
+   "due": "2026.12.02",
+   "id": "1124676879",
+   "library": "[행신] 행신종합자료실",
+   "reserve_max": 2,
+   "reserved": 2,
+   "status": "대출불가 (대출중)",
+   "title": "한국사 이상현상 연구원 : 최인서 소설"
+  },
+  "1124705471": {
+   "available": false,
+   "can_reserve": false,
+   "due": "2026.11.25",
+   "id": "1124705471",
+   "library": "[풍동] 풍동종합자료실1(3층)",
+   "reserve_max": 2,
+   "reserved": 2,
+   "status": "대출불가 (대출중)",
+   "title": "한국사 이상현상 연구원 : 최인서 소설"
+  },
+  "1124753662": {
+   "available": false,
+   "can_reserve": false,
+   "due": "2026.11.26",
+   "id": "1124753662",
+   "library": "[별꿈] 자료실",
+   "reserve_max": 2,
+   "reserved": 2,
+   "status": "대출불가 (대출중)",
+   "title": "한국사 이상현상 연구원 : 최인서 소설"
+  },
+  "1125044831": {
+   "available": false,
+   "can_reserve": false,
+   "due": "2026.12.04",
+   "id": "1125044831",
+   "library": "[마상공원] 마상공원작은자료실",
+   "reserve_max": 2,
+   "reserved": 2,
+   "status": "대출불가 (대출중)",
+   "title": "한국사 이상현상 연구원 : 최인서 소설"
+  }
+ }
+}
