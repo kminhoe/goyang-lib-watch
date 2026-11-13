@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>고양 도서관 감시</title>
+<title>고양 도서관 알리미</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <style>
   :root {
@@ -190,7 +190,7 @@
   <!-- 로그인 -->
   <section id="login" class="login" hidden>
     <div class="brand-mark"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V3H6.5A2.5 2.5 0 0 0 4 5.5v14z"/><path d="M6.5 17A2.5 2.5 0 0 0 4 19.5 2.5 2.5 0 0 0 6.5 22H20v-5"/></svg></div>
-    <h2>고양 도서관 감시</h2>
+    <h2>고양 도서관 알리미</h2>
     <p>개인용 사이트입니다. 비밀번호를 입력하세요.</p>
     <form id="login-form">
       <div class="search" style="flex:1;margin:0"><input id="password" type="password" placeholder="비밀번호" autocomplete="current-password"></div>
@@ -205,7 +205,7 @@
       <div class="brand">
         <div class="brand-mark"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V3H6.5A2.5 2.5 0 0 0 4 5.5v14z"/><path d="M6.5 17A2.5 2.5 0 0 0 4 19.5 2.5 2.5 0 0 0 6.5 22H20v-5"/></svg></div>
         <div>
-          <h1>고양 도서관 감시</h1>
+          <h1>고양 도서관 알리미</h1>
           <p id="checked">불러오는 중…</p>
         </div>
       </div>
@@ -217,13 +217,13 @@
     <div class="demo-note" id="demo-note" hidden>데모 모드입니다. 보이는 내용은 샘플 데이터입니다.</div>
 
     <div class="summary">
-      <div class="stat"><b id="s-books">–</b><span>감시 중인 책</span></div>
+      <div class="stat"><b id="s-books">–</b><span>알림 받는 책</span></div>
       <div class="stat ok"><b id="s-avail">–</b><span>지금 대출 가능</span></div>
       <div class="stat warn"><b id="s-resv">–</b><span>예약 가능</span></div>
     </div>
 
     <div class="tabs" role="tablist">
-      <button class="tab" role="tab" data-tab="watch" aria-selected="true">감시 현황</button>
+      <button class="tab" role="tab" data-tab="watch" aria-selected="true">내 책</button>
       <button class="tab" role="tab" data-tab="search" aria-selected="false">책 검색</button>
     </div>
 
@@ -234,7 +234,7 @@
         <input id="q" type="search" placeholder="책 제목을 입력하세요" autocomplete="off">
         <button class="primary" type="submit" id="search-btn">검색</button>
       </form>
-      <p class="hint">고양시도서관센터 전체 도서관에서 찾습니다. 결과에서 <b>감시 추가</b>를 누르면 30분마다 확인합니다.</p>
+      <p class="hint">고양시도서관센터 전체 도서관에서 찾습니다. 결과에서 <b>알림 받기</b>를 누르면 30분마다 확인해서 알려드립니다.</p>
       <div id="results"></div>
     </div>
 
@@ -386,7 +386,7 @@
     $("#checked").textContent = timeAgo(state.checked_at);
 
     if (!state.watch.length) {
-      el.innerHTML = `<div class="card empty">감시 중인 책이 없습니다.<br><b>책 검색</b> 탭에서 추가하세요.</div>`;
+      el.innerHTML = `<div class="card empty">알림 받는 책이 없습니다.<br><b>책 검색</b> 탭에서 추가하세요.</div>`;
       return;
     }
     el.innerHTML = state.watch.map((b) => {
@@ -400,7 +400,7 @@
       return `<article class="card">
         <div class="card-head">
           <div><h2>${esc(b.title_contains || b.keyword)}</h2><div class="meta">${esc(libs)} · ${items ? items.length : 0}권</div></div>
-          <button class="ghost" data-remove="${esc(b.keyword)}">삭제</button>
+          <button class="ghost" data-remove="${esc(b.keyword)}">알림 끄기</button>
         </div>
         ${body}
       </article>`;
@@ -422,7 +422,7 @@
       return `<article class="card">
         <div class="card-head">
           <div><h2>${esc(title)}</h2><div class="meta">${list.length}곳 소장 · 대출 가능 ${avail}곳</div></div>
-          <button class="add" data-add="${esc(title)}" ${on ? "disabled" : ""}>${on ? "감시 중" : "감시 추가"}</button>
+          <button class="add" data-add="${esc(title)}" ${on ? "disabled" : ""}>${on ? "알림 받는 중" : "알림 받기"}</button>
         </div>
         <ul class="rows">${sortItems(list).map(rowHtml).join("")}</ul>
       </article>`;
@@ -519,8 +519,8 @@
       try {
         const w = await api("/api/watch", { method: "POST", body: JSON.stringify({ keyword: title, title_contains: title, libraries: [] }) });
         state.watch = w.books;
-        add.textContent = "감시 중";
-        toast(`“${title}” 감시를 시작합니다`);
+        add.textContent = "알림 받는 중";
+        toast(`“${title}” 알림을 켰습니다`);
         load();
       } catch (err) { add.disabled = false; handleError(err); }
       return;
@@ -528,13 +528,13 @@
     const rm = e.target.closest("[data-remove]");
     if (rm) {
       const k = rm.dataset.remove;
-      if (!confirm(`“${k}” 감시를 그만할까요?`)) return;
+      if (!confirm(`“${k}” 알림을 끌까요?`)) return;
       try {
         const w = await api("/api/watch?keyword=" + encodeURIComponent(k), { method: "DELETE" });
         state.watch = w.books;
         delete state.status[k];
         renderWatch();
-        toast("삭제했습니다");
+        toast("알림을 껐습니다");
       } catch (err) { handleError(err); }
     }
   });
