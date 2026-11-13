@@ -1,0 +1,546 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>고양 도서관 감시</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+  :root {
+    --bg: #f6f5f1;
+    --surface: #ffffff;
+    --surface-2: #f0eee8;
+    --text: #1d1c1a;
+    --muted: #6d6a63;
+    --line: #e4e1d9;
+    --accent: #2f5d50;
+    --accent-soft: #e2ece8;
+    --ok: #1f7a4d;
+    --ok-soft: #dff2e7;
+    --warn: #9a5b00;
+    --warn-soft: #fbedd5;
+    --off: #8a867e;
+    --off-soft: #eceae5;
+    --danger: #b3261e;
+    --radius: 14px;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #161614;
+      --surface: #1f1f1c;
+      --surface-2: #2a2a26;
+      --text: #ecebe6;
+      --muted: #a29f97;
+      --line: #34332f;
+      --accent: #8cc4b2;
+      --accent-soft: #23352f;
+      --ok: #6fd39c;
+      --ok-soft: #1c3427;
+      --warn: #f0b860;
+      --warn-soft: #3a2c15;
+      --off: #8f8b83;
+      --off-soft: #2a2926;
+      --danger: #f28b82;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #161614; --surface: #1f1f1c; --surface-2: #2a2a26; --text: #ecebe6; --muted: #a29f97;
+    --line: #34332f; --accent: #8cc4b2; --accent-soft: #23352f; --ok: #6fd39c; --ok-soft: #1c3427;
+    --warn: #f0b860; --warn-soft: #3a2c15; --off: #8f8b83; --off-soft: #2a2926; --danger: #f28b82;
+    color-scheme: dark;
+  }
+
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+    font-size: 15px;
+    line-height: 1.5;
+    word-break: keep-all;
+  }
+  button, input { font: inherit; color: inherit; }
+  button { cursor: pointer; }
+
+  .wrap { max-width: 760px; margin: 0 auto; padding: 0 16px 64px; }
+
+  header.top {
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    padding: 28px 0 18px;
+  }
+  .brand { display: flex; align-items: center; gap: 10px; }
+  .brand-mark {
+    width: 36px; height: 36px; border-radius: 10px; background: var(--accent); color: var(--bg);
+    display: grid; place-items: center; flex: none;
+  }
+  .brand h1 { margin: 0; font-size: 19px; font-weight: 700; letter-spacing: -0.02em; }
+  .brand p { margin: 0; font-size: 12.5px; color: var(--muted); }
+  .icon-btn {
+    width: 38px; height: 38px; border-radius: 10px; border: 1px solid var(--line);
+    background: var(--surface); display: grid; place-items: center; flex: none;
+  }
+  .icon-btn:hover { background: var(--surface-2); }
+  .icon-btn.spinning svg { animation: spin 0.8s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .demo-note {
+    font-size: 13px; color: var(--warn); background: var(--warn-soft);
+    border-radius: 10px; padding: 8px 12px; margin-bottom: 14px;
+  }
+
+  /* 요약 */
+  .summary { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 18px; }
+  .stat { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 12px 14px; }
+  .stat b { display: block; font-size: 22px; font-weight: 700; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+  .stat span { font-size: 12.5px; color: var(--muted); }
+  .stat.ok b { color: var(--ok); }
+  .stat.warn b { color: var(--warn); }
+
+  /* 탭 */
+  .tabs { display: flex; gap: 4px; background: var(--surface-2); padding: 4px; border-radius: 12px; margin-bottom: 16px; }
+  .tab {
+    flex: 1; border: 0; background: transparent; padding: 9px 0; border-radius: 9px;
+    font-weight: 600; color: var(--muted);
+  }
+  .tab[aria-selected="true"] { background: var(--surface); color: var(--text); box-shadow: 0 1px 2px rgb(0 0 0 / 0.06); }
+
+  /* 카드 */
+  .card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); margin-bottom: 12px; overflow: hidden; }
+  .card-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; padding: 14px 16px 10px; }
+  .card-head h2 { margin: 0; font-size: 16.5px; font-weight: 700; letter-spacing: -0.01em; line-height: 1.35; }
+  .card-head .meta { font-size: 12.5px; color: var(--muted); margin-top: 2px; }
+  .ghost {
+    border: 0; background: transparent; color: var(--muted); font-size: 13px; padding: 4px 6px; border-radius: 8px; flex: none;
+  }
+  .ghost:hover { background: var(--surface-2); color: var(--danger); }
+
+  .rows { list-style: none; margin: 0; padding: 0; }
+  .row {
+    display: grid; grid-template-columns: 1fr auto; gap: 4px 12px; align-items: center;
+    padding: 10px 16px; border-top: 1px solid var(--line);
+  }
+  .lib { font-weight: 600; font-size: 14.5px; }
+  .lib small { font-weight: 400; color: var(--muted); font-size: 12.5px; margin-left: 4px; }
+  .sub { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: 12.5px; color: var(--muted); }
+  .sub .resv { display: inline-flex; align-items: center; gap: 6px; }
+  .meter { display: inline-flex; gap: 2px; }
+  .meter i { width: 8px; height: 8px; border-radius: 2px; background: var(--line); }
+  .meter i.on { background: var(--muted); }
+  .meter.open i:not(.on) { background: var(--ok); opacity: 0.55; }
+
+  .pill { font-size: 12.5px; font-weight: 600; padding: 3px 9px; border-radius: 999px; white-space: nowrap; }
+  .pill.ok { color: var(--ok); background: var(--ok-soft); }
+  .pill.warn { color: var(--warn); background: var(--warn-soft); }
+  .pill.off { color: var(--off); background: var(--off-soft); }
+
+  .empty { text-align: center; color: var(--muted); padding: 40px 16px; font-size: 14px; }
+
+  /* 검색 */
+  .search { display: flex; gap: 8px; margin-bottom: 14px; }
+  .search input {
+    flex: 1; min-width: 0; border: 1px solid var(--line); background: var(--surface); border-radius: 12px; padding: 11px 14px; outline: none;
+  }
+  .search input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+  .primary {
+    border: 0; background: var(--accent); color: var(--bg); font-weight: 600; border-radius: 12px; padding: 0 18px; white-space: nowrap;
+  }
+  .primary:disabled { opacity: 0.5; cursor: default; }
+  .add {
+    border: 1px solid var(--accent); color: var(--accent); background: transparent; font-weight: 600; font-size: 13px;
+    padding: 5px 11px; border-radius: 9px; flex: none; white-space: nowrap;
+  }
+  .add:hover { background: var(--accent-soft); }
+  .add[disabled] { border-color: var(--line); color: var(--muted); cursor: default; background: transparent; }
+
+  .hint { font-size: 12.5px; color: var(--muted); margin: -4px 0 14px; }
+
+  /* 로그인 */
+  .login { max-width: 360px; margin: 12vh auto 0; text-align: center; }
+  .login h2 { font-size: 18px; margin: 14px 0 4px; }
+  .login p { color: var(--muted); font-size: 13.5px; margin: 0 0 18px; }
+  .login form { display: flex; gap: 8px; }
+  .login .brand-mark { margin: 0 auto; width: 48px; height: 48px; border-radius: 14px; }
+  .error { color: var(--danger); font-size: 13px; margin-top: 10px; min-height: 1em; }
+
+  .toast {
+    position: fixed; left: 50%; bottom: 24px; transform: translate(-50%, 20px); opacity: 0;
+    background: var(--text); color: var(--bg); padding: 10px 16px; border-radius: 10px; font-size: 14px;
+    transition: 0.2s; pointer-events: none; max-width: calc(100% - 32px);
+  }
+  .toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+  .footer { text-align: center; font-size: 12px; color: var(--muted); margin-top: 28px; }
+  .footer a { color: inherit; }
+
+  [hidden] { display: none !important; }
+
+  @media (max-width: 420px) {
+    .stat { padding: 10px 12px; }
+    .stat b { font-size: 20px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- 로그인 -->
+  <section id="login" class="login" hidden>
+    <div class="brand-mark"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V3H6.5A2.5 2.5 0 0 0 4 5.5v14z"/><path d="M6.5 17A2.5 2.5 0 0 0 4 19.5 2.5 2.5 0 0 0 6.5 22H20v-5"/></svg></div>
+    <h2>고양 도서관 감시</h2>
+    <p>개인용 사이트입니다. 비밀번호를 입력하세요.</p>
+    <form id="login-form">
+      <div class="search" style="flex:1;margin:0"><input id="password" type="password" placeholder="비밀번호" autocomplete="current-password"></div>
+      <button class="primary" type="submit">들어가기</button>
+    </form>
+    <div class="error" id="login-error"></div>
+  </section>
+
+  <!-- 본문 -->
+  <section id="app" hidden>
+    <header class="top">
+      <div class="brand">
+        <div class="brand-mark"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V3H6.5A2.5 2.5 0 0 0 4 5.5v14z"/><path d="M6.5 17A2.5 2.5 0 0 0 4 19.5 2.5 2.5 0 0 0 6.5 22H20v-5"/></svg></div>
+        <div>
+          <h1>고양 도서관 감시</h1>
+          <p id="checked">불러오는 중…</p>
+        </div>
+      </div>
+      <button class="icon-btn" id="refresh" title="새로고침" aria-label="새로고침">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-3-6.7L21 8"/><path d="M21 3v5h-5"/></svg>
+      </button>
+    </header>
+
+    <div class="demo-note" id="demo-note" hidden>데모 모드입니다. 보이는 내용은 샘플 데이터입니다.</div>
+
+    <div class="summary">
+      <div class="stat"><b id="s-books">–</b><span>감시 중인 책</span></div>
+      <div class="stat ok"><b id="s-avail">–</b><span>지금 대출 가능</span></div>
+      <div class="stat warn"><b id="s-resv">–</b><span>예약 가능</span></div>
+    </div>
+
+    <div class="tabs" role="tablist">
+      <button class="tab" role="tab" data-tab="watch" aria-selected="true">감시 현황</button>
+      <button class="tab" role="tab" data-tab="search" aria-selected="false">책 검색</button>
+    </div>
+
+    <div id="tab-watch"></div>
+
+    <div id="tab-search" hidden>
+      <form class="search" id="search-form">
+        <input id="q" type="search" placeholder="책 제목을 입력하세요" autocomplete="off">
+        <button class="primary" type="submit" id="search-btn">검색</button>
+      </form>
+      <p class="hint">고양시도서관센터 전체 도서관에서 찾습니다. 결과에서 <b>감시 추가</b>를 누르면 30분마다 확인합니다.</p>
+      <div id="results"></div>
+    </div>
+
+    <p class="footer">30분마다 확인 · 대출 가능해지거나 예약 자리가 생기면 텔레그램으로 알림<br>
+      <a href="#" id="logout">로그아웃</a></p>
+  </section>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+(() => {
+  // ------------------------------------------------------------ 설정
+  const params = new URLSearchParams(location.search);
+  const DEMO = params.has("demo") || location.protocol === "file:";
+  const PW_KEY = "glw-password";
+
+  const store = {
+    get(k) { try { return localStorage.getItem(k); } catch { return null; } },
+    set(k, v) { try { localStorage.setItem(k, v); } catch {} },
+    del(k) { try { localStorage.removeItem(k); } catch {} },
+  };
+
+  const $ = (s) => document.querySelector(s);
+  const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+
+  // ------------------------------------------------------------ API
+  class AuthError extends Error {}
+
+  async function api(path, opts = {}) {
+    if (DEMO) return demoApi(path, opts);
+    const res = await fetch(path, {
+      ...opts,
+      headers: { "Content-Type": "application/json", "X-Password": store.get(PW_KEY) || "", ...(opts.headers || {}) },
+    });
+    if (res.status === 401) throw new AuthError("비밀번호가 맞지 않습니다.");
+    if (!res.ok) throw new Error((await res.text()) || res.statusText);
+    return res.json();
+  }
+
+  // ------------------------------------------------------------ 데모 데이터
+  const demo = {
+    checked_at: new Date(Date.now() - 12 * 60 * 1000).toISOString(),
+    watch: [
+      { keyword: "한국사 이상현상 연구원", title_contains: "한국사 이상현상 연구원", libraries: [] },
+      { keyword: "작별하지 않는다", title_contains: "작별하지 않는다", libraries: ["마두", "화정"] },
+    ],
+    status: {
+      "한국사 이상현상 연구원": [
+        { id: "1001", title: "한국사 이상현상 연구원", library: "[식사] 식사종합자료실", status: "대출불가 (대출중)", available: false, reserved: 2, reserve_max: 2, can_reserve: false, due: "2026.11.26" },
+        { id: "1002", title: "한국사 이상현상 연구원", library: "[마두] 마두어린이자료실", status: "대출불가 (대출중)", available: false, reserved: 1, reserve_max: 2, can_reserve: true, due: "2026.11.20" },
+        { id: "1003", title: "한국사 이상현상 연구원", library: "[화정] 화정종합자료실", status: "대출가능", available: true, reserved: 0, reserve_max: 2, can_reserve: false, due: "" },
+      ],
+      "작별하지 않는다": [
+        { id: "2001", title: "작별하지 않는다", library: "[마두] 마두종합자료실", status: "대출불가 (대출중)", available: false, reserved: 2, reserve_max: 2, can_reserve: false, due: "2026.11.18" },
+        { id: "2002", title: "작별하지 않는다", library: "[화정] 화정종합자료실", status: "대출불가 (대출중)", available: false, reserved: 2, reserve_max: 2, can_reserve: false, due: "2026.11.22" },
+      ],
+    },
+  };
+
+  function demoSearch(q) {
+    const libs = ["[식사] 식사종합자료실", "[마두] 마두종합자료실", "[화정] 화정종합자료실", "[일산] 일산종합자료실", "[행신] 행신종합자료실"];
+    const titles = [q, `${q} 2`, `처음 읽는 ${q}`];
+    const out = [];
+    let n = 0;
+    titles.forEach((t, ti) => {
+      libs.slice(0, 4 - ti).forEach((lib, li) => {
+        const avail = (li + ti) % 3 === 0;
+        const reserved = avail ? 0 : (li % 2) + 1;
+        out.push({ id: `9${ti}${li}`, title: t, library: lib, status: avail ? "대출가능" : "대출불가 (대출중)", available: avail, reserved, reserve_max: 2, can_reserve: !avail && reserved < 2, due: avail ? "" : `2026.11.${18 + li + ti}` });
+        n++;
+      });
+    });
+    return out;
+  }
+
+  async function demoApi(path, opts) {
+    await new Promise((r) => setTimeout(r, 250));
+    const url = new URL(path, location.href);
+    const method = opts.method || "GET";
+    if (url.pathname === "/api/status") return { checked_at: demo.checked_at, books: demo.status };
+    if (url.pathname === "/api/watch" && method === "GET") return { books: demo.watch };
+    if (url.pathname === "/api/watch" && method === "POST") {
+      const book = JSON.parse(opts.body);
+      demo.watch.push(book);
+      demo.status[book.keyword] = demoSearch(book.keyword).filter((i) => i.title.replace(/\s/g, "") .includes(book.title_contains.replace(/\s/g, "")));
+      return { books: demo.watch };
+    }
+    if (url.pathname === "/api/watch" && method === "DELETE") {
+      const k = url.searchParams.get("keyword");
+      demo.watch = demo.watch.filter((b) => b.keyword !== k);
+      delete demo.status[k];
+      return { books: demo.watch };
+    }
+    if (url.pathname === "/api/search") return { items: demoSearch(url.searchParams.get("q")) };
+    throw new Error("unknown");
+  }
+
+  // ------------------------------------------------------------ 표시
+  function pill(item) {
+    if (item.available) return `<span class="pill ok">대출 가능</span>`;
+    if (item.can_reserve) return `<span class="pill warn">예약 가능</span>`;
+    const why = (item.status.match(/\((.*)\)/) || [])[1] || item.status || "알 수 없음";
+    return `<span class="pill off">${esc(why)}</span>`;
+  }
+
+  function splitLib(lib) {
+    const m = lib.match(/^\[(.+?)\]\s*(.*)$/);
+    return m ? [m[1], m[2]] : [lib, ""];
+  }
+
+  function rowHtml(item) {
+    const [name, room] = splitLib(item.library);
+    const bits = [];
+    if (item.reserve_max) {
+      const cells = Array.from({ length: item.reserve_max }, (_, i) => `<i class="${i < item.reserved ? "on" : ""}"></i>`).join("");
+      bits.push(`<span class="resv"><span class="meter ${item.can_reserve ? "open" : ""}">${cells}</span>예약 ${item.reserved}/${item.reserve_max}</span>`);
+    }
+    if (item.due) bits.push(`<span>반납예정 ${esc(item.due)}</span>`);
+    return `<li class="row">
+      <div class="lib">${esc(name)}<small>${esc(room)}</small></div>
+      ${pill(item)}
+      ${bits.length ? `<div class="sub">${bits.join("")}</div>` : ""}
+    </li>`;
+  }
+
+  // 대출 가능 → 예약 가능 → 나머지 순서
+  const rank = (i) => (i.available ? 0 : i.can_reserve ? 1 : 2);
+  const sortItems = (items) => [...items].sort((a, b) => rank(a) - rank(b) || a.library.localeCompare(b.library, "ko"));
+
+  let state = { watch: [], status: {}, checked_at: null };
+
+  function timeAgo(iso) {
+    if (!iso) return "아직 확인 전";
+    const min = Math.round((Date.now() - new Date(iso)) / 60000);
+    if (min < 1) return "방금 확인";
+    if (min < 60) return `${min}분 전 확인`;
+    const h = Math.floor(min / 60);
+    if (h < 24) return `${h}시간 전 확인`;
+    return new Date(iso).toLocaleString("ko-KR");
+  }
+
+  function renderWatch() {
+    const el = $("#tab-watch");
+    const all = state.watch.flatMap((b) => state.status[b.keyword] || []);
+    $("#s-books").textContent = state.watch.length;
+    $("#s-avail").textContent = all.filter((i) => i.available).length;
+    $("#s-resv").textContent = all.filter((i) => i.can_reserve).length;
+    $("#checked").textContent = timeAgo(state.checked_at);
+
+    if (!state.watch.length) {
+      el.innerHTML = `<div class="card empty">감시 중인 책이 없습니다.<br><b>책 검색</b> 탭에서 추가하세요.</div>`;
+      return;
+    }
+    el.innerHTML = state.watch.map((b) => {
+      const items = state.status[b.keyword];
+      const libs = b.libraries?.length ? b.libraries.join(", ") + "만" : "모든 도서관";
+      const body = items === undefined
+        ? `<div class="empty" style="padding:16px">다음 확인 때 상태가 표시됩니다.</div>`
+        : items.length
+          ? `<ul class="rows">${sortItems(items).map(rowHtml).join("")}</ul>`
+          : `<div class="empty" style="padding:16px">검색 결과가 없습니다.</div>`;
+      return `<article class="card">
+        <div class="card-head">
+          <div><h2>${esc(b.title_contains || b.keyword)}</h2><div class="meta">${esc(libs)} · ${items ? items.length : 0}권</div></div>
+          <button class="ghost" data-remove="${esc(b.keyword)}">삭제</button>
+        </div>
+        ${body}
+      </article>`;
+    }).join("");
+  }
+
+  function renderResults(items, q) {
+    const el = $("#results");
+    if (!items.length) { el.innerHTML = `<div class="card empty">“${esc(q)}” 검색 결과가 없습니다.</div>`; return; }
+    const groups = new Map();
+    for (const i of items) {
+      if (!groups.has(i.title)) groups.set(i.title, []);
+      groups.get(i.title).push(i);
+    }
+    const watched = new Set(state.watch.map((b) => (b.title_contains || b.keyword).replace(/\s/g, "")));
+    el.innerHTML = [...groups].map(([title, list]) => {
+      const on = watched.has(title.replace(/\s/g, ""));
+      const avail = list.filter((i) => i.available).length;
+      return `<article class="card">
+        <div class="card-head">
+          <div><h2>${esc(title)}</h2><div class="meta">${list.length}곳 소장 · 대출 가능 ${avail}곳</div></div>
+          <button class="add" data-add="${esc(title)}" ${on ? "disabled" : ""}>${on ? "감시 중" : "감시 추가"}</button>
+        </div>
+        <ul class="rows">${sortItems(list).map(rowHtml).join("")}</ul>
+      </article>`;
+    }).join("");
+  }
+
+  function toast(msg) {
+    const t = $("#toast");
+    t.textContent = msg;
+    t.classList.add("show");
+    clearTimeout(toast.timer);
+    toast.timer = setTimeout(() => t.classList.remove("show"), 2200);
+  }
+
+  // ------------------------------------------------------------ 동작
+  async function load() {
+    const btn = $("#refresh");
+    btn.classList.add("spinning");
+    try {
+      const [w, s] = await Promise.all([api("/api/watch"), api("/api/status")]);
+      state.watch = w.books;
+      state.status = s.books || {};
+      state.checked_at = s.checked_at;
+      renderWatch();
+    } catch (e) {
+      handleError(e);
+    } finally {
+      btn.classList.remove("spinning");
+    }
+  }
+
+  function handleError(e) {
+    if (e instanceof AuthError) { store.del(PW_KEY); showLogin(e.message); return; }
+    toast("오류: " + e.message);
+  }
+
+  function showLogin(msg = "") {
+    $("#app").hidden = true;
+    $("#login").hidden = false;
+    $("#login-error").textContent = msg;
+    $("#password").focus();
+  }
+
+  function showApp() {
+    $("#login").hidden = true;
+    $("#app").hidden = false;
+    $("#demo-note").hidden = !DEMO;
+    load();
+  }
+
+  $("#login-form").addEventListener("submit", (e) => {
+    e.preventDefault();
+    const pw = $("#password").value.trim();
+    if (!pw) return;
+    store.set(PW_KEY, pw);
+    showApp();
+  });
+
+  $("#logout").addEventListener("click", (e) => { e.preventDefault(); store.del(PW_KEY); showLogin(); });
+  $("#refresh").addEventListener("click", load);
+
+  document.querySelectorAll(".tab").forEach((t) => t.addEventListener("click", () => {
+    document.querySelectorAll(".tab").forEach((x) => x.setAttribute("aria-selected", x === t));
+    $("#tab-watch").hidden = t.dataset.tab !== "watch";
+    $("#tab-search").hidden = t.dataset.tab !== "search";
+    if (t.dataset.tab === "search") $("#q").focus();
+  }));
+
+  let lastQuery = "";
+  $("#search-form").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const q = $("#q").value.trim();
+    if (!q) return;
+    lastQuery = q;
+    const btn = $("#search-btn");
+    btn.disabled = true;
+    btn.textContent = "검색 중";
+    try {
+      const { items } = await api("/api/search?q=" + encodeURIComponent(q));
+      renderResults(items, q);
+    } catch (err) {
+      handleError(err);
+    } finally {
+      btn.disabled = false;
+      btn.textContent = "검색";
+    }
+  });
+
+  document.addEventListener("click", async (e) => {
+    const add = e.target.closest("[data-add]");
+    if (add) {
+      const title = add.dataset.add;
+      add.disabled = true;
+      try {
+        const w = await api("/api/watch", { method: "POST", body: JSON.stringify({ keyword: title, title_contains: title, libraries: [] }) });
+        state.watch = w.books;
+        add.textContent = "감시 중";
+        toast(`“${title}” 감시를 시작합니다`);
+        load();
+      } catch (err) { add.disabled = false; handleError(err); }
+      return;
+    }
+    const rm = e.target.closest("[data-remove]");
+    if (rm) {
+      const k = rm.dataset.remove;
+      if (!confirm(`“${k}” 감시를 그만할까요?`)) return;
+      try {
+        const w = await api("/api/watch?keyword=" + encodeURIComponent(k), { method: "DELETE" });
+        state.watch = w.books;
+        delete state.status[k];
+        renderWatch();
+        toast("삭제했습니다");
+      } catch (err) { handleError(err); }
+    }
+  });
+
+  if (DEMO || store.get(PW_KEY)) showApp(); else showLogin();
+})();
+</script>
+</body>
+</html>
