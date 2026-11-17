@@ -176,6 +176,17 @@
    "status": "대출불가 (대출중)",
    "title": "한국사 이상현상 연구원 : 최인서 소설"
   },
+  "1125024648": {
+   "available": true,
+   "can_reserve": false,
+   "due": "",
+   "id": "1125024648",
+   "library": "[관산] 관산작은자료실",
+   "reserve_max": 0,
+   "reserved": 0,
+   "status": "대출가능 (비치중)",
+   "title": "한국사 이상현상 연구원 : 최인서 소설"
+  },
   "1125044831": {
    "available": false,
    "can_reserve": false,
