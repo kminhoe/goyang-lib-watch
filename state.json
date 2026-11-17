@@ -178,12 +178,12 @@
   },
   "1125024648": {
    "available": false,
-   "can_reserve": true,
+   "can_reserve": false,
    "due": "2026.12.08",
    "id": "1125024648",
    "library": "[관산] 관산작은자료실",
    "reserve_max": 2,
-   "reserved": 0,
+   "reserved": 2,
    "status": "대출불가 (대출중)",
    "title": "한국사 이상현상 연구원 : 최인서 소설"
   },
