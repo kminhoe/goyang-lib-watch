@@ -156,12 +156,12 @@
   },
   "1124705471": {
    "available": false,
-   "can_reserve": false,
+   "can_reserve": true,
    "due": "",
    "id": "1124705471",
    "library": "[풍동] 풍동종합자료실1(3층)",
    "reserve_max": 2,
-   "reserved": 2,
+   "reserved": 1,
    "status": "대출불가 (대출중)",
    "title": "한국사 이상현상 연구원 : 최인서 소설"
   },
