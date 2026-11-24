@@ -135,7 +135,7 @@
   "1124654088": {
    "available": false,
    "can_reserve": false,
-   "due": "2026.11.24",
+   "due": "",
    "id": "1124654088",
    "library": "[마두] 마두종합자료실2(2층)",
    "reserve_max": 2,
@@ -201,9 +201,20 @@
   "1125381141": {
    "available": false,
    "can_reserve": false,
-   "due": "",
+   "due": "2026.12.08",
    "id": "1125381141",
    "library": "[삼송] 삼송종합자료실",
+   "reserve_max": 2,
+   "reserved": 2,
+   "status": "대출불가 (대출중)",
+   "title": "한국사 이상현상 연구원 : 최인서 소설"
+  },
+  "1125388722": {
+   "available": false,
+   "can_reserve": false,
+   "due": "2026.12.15",
+   "id": "1125388722",
+   "library": "[화전] 화전작은자료실",
    "reserve_max": 2,
    "reserved": 2,
    "status": "대출불가 (대출중)",
