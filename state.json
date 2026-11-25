@@ -102,7 +102,7 @@
   "1124067590": {
    "available": false,
    "can_reserve": false,
-   "due": "",
+   "due": "2026.12.16",
    "id": "1124067590",
    "library": "[화정] 화정종합자료실1",
    "reserve_max": 2,
@@ -113,7 +113,7 @@
   "1124208479": {
    "available": false,
    "can_reserve": false,
-   "due": "2026.12.01",
+   "due": "",
    "id": "1124208479",
    "library": "[가좌] <가좌>종합자료실",
    "reserve_max": 2,
