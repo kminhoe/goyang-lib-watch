@@ -69,7 +69,7 @@
   "1123549993": {
    "available": false,
    "can_reserve": false,
-   "due": "",
+   "due": "2026.12.11",
    "id": "1123549993",
    "library": "[한뫼] 한뫼종합자료실",
    "reserve_max": 2,
@@ -222,12 +222,12 @@
   },
   "1125498034": {
    "available": false,
-   "can_reserve": true,
+   "can_reserve": false,
    "due": "2026.12.18",
    "id": "1125498034",
    "library": "[내유] 내유작은자료실",
    "reserve_max": 2,
-   "reserved": 0,
+   "reserved": 2,
    "status": "대출불가 (대출중)",
    "title": "한국사 이상현상 연구원 : 최인서 소설"
   }
