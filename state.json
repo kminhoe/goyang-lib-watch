@@ -221,14 +221,14 @@
    "title": "한국사 이상현상 연구원 : 최인서 소설"
   },
   "1125498034": {
-   "available": true,
-   "can_reserve": false,
-   "due": "",
+   "available": false,
+   "can_reserve": true,
+   "due": "2026.12.18",
    "id": "1125498034",
    "library": "[내유] 내유작은자료실",
-   "reserve_max": 0,
+   "reserve_max": 2,
    "reserved": 0,
-   "status": "대출가능 (비치중)",
+   "status": "대출불가 (대출중)",
    "title": "한국사 이상현상 연구원 : 최인서 소설"
   }
  }
