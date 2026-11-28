@@ -36,7 +36,7 @@
   "1123310145": {
    "available": false,
    "can_reserve": false,
-   "due": "2026.11.29",
+   "due": "",
    "id": "1123310145",
    "library": "[대화] 종합자료실",
    "reserve_max": 2,
@@ -168,7 +168,7 @@
   "1124753662": {
    "available": false,
    "can_reserve": false,
-   "due": "",
+   "due": "2026.12.19",
    "id": "1124753662",
    "library": "[별꿈] 자료실",
    "reserve_max": 2,
@@ -190,7 +190,7 @@
   "1125044831": {
    "available": false,
    "can_reserve": false,
-   "due": "2026.12.04",
+   "due": "",
    "id": "1125044831",
    "library": "[마상공원] 마상공원작은자료실",
    "reserve_max": 2,
